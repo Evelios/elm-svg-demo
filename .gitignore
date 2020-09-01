@@ -1,0 +1,6 @@
+# Elm Files
+elm-stuff/
+node_modules/
+
+# User Files
+*.swp
