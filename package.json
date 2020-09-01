@@ -4,7 +4,7 @@
   "description": "Environment for showcasing interactive demos",
   "main": "\"\"",
   "scripts": {
-    "start": "elm reactor",
+    "start": "elm-live -- src/Main.elm",
     "test": "elm-test"
   },
   "repository": {

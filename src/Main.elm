@@ -1,12 +1,14 @@
 module Main exposing (main)
 
 import Browser
-import Element
+import Component
+import Element exposing (Element)
 import Html exposing (Html)
 
 
 type alias Model =
-    {}
+    { title : String
+    }
 
 
 type Msg
@@ -25,7 +27,8 @@ main =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( {}
+    ( { title = "Project Name"
+      }
     , Cmd.none
     )
 
@@ -41,5 +44,24 @@ subscriptions _ =
 
 
 view : Model -> Html Msg
-view _ =
-    Element.layout [] Element.none
+view model =
+    Element.layout
+        [ Element.width Element.fill
+        , Element.height Element.fill
+        ]
+        (topBar { title = model.title })
+
+
+
+--(topBar
+--    { title = model.name }
+--)
+
+
+topBar : { title : String } -> Element msg
+topBar { title } =
+    Element.row
+        []
+        [ Component.icon.settings
+        , Element.text title
+        ]
