@@ -3,7 +3,9 @@ module Main exposing (main)
 import Browser
 import Component
 import Element exposing (Element)
+import Element.Background
 import Html exposing (Html)
+import Theme
 
 
 type alias Model =
@@ -48,20 +50,6 @@ view model =
     Element.layout
         [ Element.width Element.fill
         , Element.height Element.fill
+        , Element.Background.color Theme.palette.background
         ]
-        (topBar { title = model.title })
-
-
-
---(topBar
---    { title = model.name }
---)
-
-
-topBar : { title : String } -> Element msg
-topBar { title } =
-    Element.row
-        []
-        [ Component.icon.settings
-        , Element.text title
-        ]
+        (Component.topBar { title = model.title })
