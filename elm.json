@@ -14,6 +14,7 @@
             "ianmackenzie/elm-geometry": "3.6.0",
             "ianmackenzie/elm-geometry-test": "1.0.0",
             "ianmackenzie/elm-units": "2.6.0",
+            "mdgriffith/elm-ui": "1.1.8",
             "timjs/elm-collage": "2.0.2"
         },
         "indirect": {

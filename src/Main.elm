@@ -1,6 +1,7 @@
 module Main exposing (main)
 
 import Browser
+import Element
 import Html exposing (Html)
 
 
@@ -41,4 +42,4 @@ subscriptions _ =
 
 view : Model -> Html Msg
 view _ =
-    Html.div [] []
+    Element.layout [] Element.none
