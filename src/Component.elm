@@ -1,8 +1,8 @@
-module Component exposing (topBar, icon)
+module Component exposing (topBar, settings, icon, iconButton, imageView)
 
 {-| Viewable objects.
 
-@docs topBar, icon, iconButton
+@docs topBar, settings, icon, iconButton, imageView
 
 -}
 
@@ -16,8 +16,12 @@ import Svg
 import Theme
 
 
-topBar : { title : String } -> Element msg
-topBar { title } =
+topBar :
+    { title : String
+    , toggleSettings : msg
+    }
+    -> Element msg
+topBar { title, toggleSettings } =
     Element.row
         [ Element.width Element.fill
         , Element.height Element.shrink
@@ -25,9 +29,27 @@ topBar { title } =
         , Element.padding Theme.size.small
         , Element.spacing Theme.size.medium
         ]
-        [ icon.settings
-        , Element.text title
+        [ Element.text title
+        , Element.el
+            [ Element.alignRight ]
+            (iconButton
+                { label = icon.settings
+                , action = toggleSettings
+                }
+            )
         ]
+
+
+settings : List (Element msg) -> Element msg
+settings elements =
+    Element.column
+        [ Element.height Element.fill
+        , Element.Background.color Theme.palette.secondary
+        , Element.alignRight
+        , Element.paddingXY Theme.size.medium Theme.size.small
+        , Element.spacing Theme.size.small
+        ]
+        (Element.text "Settings" :: elements)
 
 
 icon :
@@ -70,3 +92,49 @@ iconButton { label, action } =
         , Element.pointer
         ]
         label
+
+
+imageView : Element msg
+imageView =
+    let
+        block =
+            Element.el
+                [ Element.width Element.fill
+                , Element.height Element.fill
+                , Element.Background.color Theme.palette.tertiary
+                ]
+                Element.none
+
+        xPad =
+            Element.el
+                [ Element.width <| Element.fillPortion 1
+                , Element.height Element.fill
+                ]
+                Element.none
+
+        yPad =
+            Element.el
+                [ Element.height <| Element.fillPortion 1
+                , Element.width Element.fill
+                ]
+                Element.none
+    in
+    Element.row
+        [ Element.width Element.fill
+        , Element.height Element.fill
+        ]
+        [ xPad
+        , Element.column
+            [ Element.width <| Element.fillPortion 8
+            , Element.height Element.fill
+            ]
+            [ yPad
+            , Element.el
+                [ Element.height <| Element.fillPortion 8
+                , Element.width <| Element.fill
+                ]
+                block
+            , yPad
+            ]
+        , xPad
+        ]
