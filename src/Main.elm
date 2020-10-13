@@ -1,11 +1,13 @@
 module Main exposing (main)
 
 import Browser
-import Component exposing (settings)
-import Element exposing (Element)
-import Element.Background
+import Element exposing (..)
+import Element.Background as Background
+import Element.Font as Font
 import Html exposing (Html)
-import Theme
+import Ui.Color exposing (Theme(..))
+import Ui.TopBar
+import Ui.Typography
 
 
 type alias Model =
@@ -15,7 +17,7 @@ type alias Model =
 
 
 type Msg
-    = ToggleSettings
+    = None
 
 
 main : Program () Model Msg
@@ -40,10 +42,8 @@ init _ =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ToggleSettings ->
-            ( { model | showSettings = not model.showSettings }
-            , Cmd.none
-            )
+        None ->
+            ( model, Cmd.none )
 
 
 subscriptions : model -> Sub Msg
@@ -51,42 +51,32 @@ subscriptions _ =
     Sub.none
 
 
-appendIf : Bool -> a -> List a -> List a
-appendIf cond ele list =
-    case cond of
-        True ->
-            List.append list [ ele ]
-
-        False ->
-            list
-
-
 view : Model -> Html Msg
-view model =
+view _ =
     let
         topBar =
-            Component.topBar
-                { title = model.title
-                , toggleSettings = ToggleSettings
-                }
+            Ui.TopBar.topBar [] <|
+                Ui.Typography.h3
+                    [ centerY
+                    , Font.color (Ui.Color.text Dark)
+                    ]
+                    (text <| "Project Name")
 
         body =
-            Element.row
-                [ Element.height Element.fill
-                , Element.width Element.fill
+            el
+                [ height fill
+                , width fill
                 ]
-                ([ Component.imageView ]
-                    |> appendIf model.showSettings (settings [])
-                )
+                none
     in
-    Element.layout
-        [ Element.width Element.fill
-        , Element.height Element.fill
-        , Element.Background.color Theme.palette.background
+    layout
+        [ width fill
+        , height fill
+        , Background.color Ui.Color.foreground
         ]
-        (Element.column
-            [ Element.width Element.fill
-            , Element.height Element.fill
+        (column
+            [ width fill
+            , height fill
             ]
             [ topBar
             , body
