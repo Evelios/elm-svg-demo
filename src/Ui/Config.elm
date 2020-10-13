@@ -16,7 +16,9 @@ config :
         , green : Element.Color
         }
     , topBar :
-        { height : Float
+        { height : Int
+        , fontSize : Int
+        , paddingX : Int
         }
     }
 config =
@@ -29,6 +31,8 @@ config =
         , green = hexToColor "#59c9a5"
         }
     , topBar =
-        { height = 50
+        { height = 48
+        , fontSize = 24
+        , paddingX = 18
         }
     }

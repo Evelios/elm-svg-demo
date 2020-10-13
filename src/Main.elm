@@ -56,11 +56,7 @@ view _ =
     let
         topBar =
             Ui.TopBar.topBar [] <|
-                Ui.Typography.h3
-                    [ centerY
-                    , Font.color (Ui.Color.text Dark)
-                    ]
-                    (text <| "Project Name")
+                Ui.TopBar.title [] (text "Project Name")
 
         body =
             el
