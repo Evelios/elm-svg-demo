@@ -1,4 +1,4 @@
-module Paper exposing
+module Data.Paper exposing
     ( paper
     , size, height, width, aspectRatio
     , a0, a1, a2, a3, a4
@@ -43,6 +43,8 @@ translated into any unit system you would like.
 -}
 
 import AspectRatio exposing (AspectRatio)
+import Data.AspectRatio exposing (AspectRatio)
+import Data.Size as Size exposing (Size)
 import Length exposing (Length, Meters)
 import Quantity
 import Size exposing (Size)

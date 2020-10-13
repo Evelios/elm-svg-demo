@@ -1,6 +1,21 @@
-module Ui.TopBar exposing (icon, title, topBar)
+module Ui.TopBar exposing
+    ( title, topBar, icon
+    , topBarHeight
+    )
 
-{-| -}
+{-|
+
+
+# Components
+
+@docs title, topBar, icon
+
+
+# Attributes
+
+@docs topBarHeight
+
+-}
 
 import Element exposing (..)
 import Element.Background
@@ -65,3 +80,8 @@ icon attributes theIcon =
         , size = Ui.Config.topBar.fontSize
         }
         theIcon
+
+
+topBarHeight : Int
+topBarHeight =
+    Ui.Config.topBar.height

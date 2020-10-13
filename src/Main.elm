@@ -1,25 +1,22 @@
 module Main exposing (main)
 
 import Browser
+import Browser.Dom
+import Data.Size as Size exposing (Size)
 import Element exposing (..)
 import Element.Background as Background
 import Element.Events
+import Generative
 import Html exposing (Html)
 import List.Extra
+import Picture
+import Pixels exposing (Pixels)
+import Quantity
+import Task
 import Ui.Color
 import Ui.Icon
 import Ui.Panel
 import Ui.TopBar
-
-
-type alias Model =
-    { title : String
-    , showSettings : Bool
-    }
-
-
-type Msg
-    = ToggleSettings
 
 
 main : Program () Model Msg
@@ -32,13 +29,34 @@ main =
         }
 
 
+
+-- Init
+
+
+type alias Model =
+    { title : String
+    , showSettings : Bool
+    , size : Size Pixels
+    }
+
+
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( { title = "Project Name"
       , showSettings = True
+      , size = Size.size Quantity.zero Quantity.zero
       }
-    , Cmd.none
+    , Task.perform GotViewport Browser.Dom.getViewport
     )
+
+
+
+-- Update
+
+
+type Msg
+    = ToggleSettings
+    | GotViewport Browser.Dom.Viewport
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -49,10 +67,24 @@ update msg model =
             , Cmd.none
             )
 
+        GotViewport { viewport } ->
+            ( { model
+                | size =
+                    Size.size
+                        (Pixels.float viewport.width)
+                        (Pixels.float viewport.height)
+              }
+            , Cmd.none
+            )
+
 
 subscriptions : model -> Sub Msg
 subscriptions _ =
     Sub.none
+
+
+
+-- View
 
 
 view : Model -> Html Msg
@@ -73,12 +105,10 @@ view model =
                 [ height fill
                 , width fill
                 ]
-                ([ pictureContent ]
+                ([ pictureContent model
+                 ]
                     |> List.Extra.appendIf model.showSettings settings
                 )
-
-        pictureContent =
-            el [ width fill, height fill ] none
 
         settings =
             Ui.Panel.panel []
@@ -99,3 +129,21 @@ view model =
             , body
             ]
         )
+
+
+pictureContent : Model -> Element msg
+pictureContent model =
+    let
+        pictureSize =
+            model.size
+                |> Size.subtractHeight (Pixels.float <| toFloat Ui.TopBar.topBarHeight)
+                |> (\size ->
+                        if model.showSettings then
+                            Size.subtractWidth (Pixels.float <| toFloat Ui.Panel.panelWidth) size
+
+                        else
+                            size
+                   )
+    in
+    el [ width fill, height fill ] <|
+        Generative.render (Size.aspectRatio pictureSize) Picture.picture

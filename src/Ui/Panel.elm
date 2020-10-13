@@ -1,4 +1,7 @@
-module Ui.Panel exposing (panel, header, break)
+module Ui.Panel exposing
+    ( panel, header, break
+    , panelWidth
+    )
 
 {-| A large vertical section on a webpage. This is generally intended to be a
 navigation or settings section
@@ -7,6 +10,11 @@ navigation or settings section
 # Elements
 
 @docs panel, header, break
+
+
+# Attributes
+
+@docs panelWidth
 
 -}
 
@@ -68,3 +76,9 @@ break =
         , Background.color <| Ui.Color.Extra.lighten 0.25 Ui.Color.primary
         ]
         none
+
+
+{-| -}
+panelWidth : Int
+panelWidth =
+    Ui.Config.panel.width

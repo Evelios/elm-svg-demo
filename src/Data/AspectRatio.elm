@@ -1,19 +1,47 @@
-module AspectRatio exposing
+module Data.AspectRatio exposing
     ( AspectRatio
-    , aspectRatio
-    , aspectRatioUnsafe
+    , aspectRatio, aspectRatioUnsafe
+    , x, y
+    , xNormalizedBelowOne, xNormalizedAboveOne, yNormalizedBelowOne, yNormalizedAboveOne
+    , smallestBelowOne
     , equal
-    , x
-    , xNormalizedAboveOne
-    , xNormalizedBelowOne
-    , y
-    , yNormalizedAboveOne
-    , yNormalizedBelowOne
     )
+
+{-|
+
+
+# Type
+
+@docs AspectRatio
+
+
+# Constructors
+
+@docs aspectRatio, aspectRatioUnsafe
+
+
+# Accessors
+
+@docs x, y
+
+@docs xNormalizedBelowOne, xNormalizedAboveOne, yNormalizedBelowOne, yNormalizedAboveOne
+
+@docs smallestBelowOne
+
+
+# Operations
+
+@docs equal
+
+-}
 
 
 type AspectRatio
     = AspectRatio Float Float
+
+
+
+-- Constructors
 
 
 aspectRatio : Float -> Float -> Maybe AspectRatio
@@ -31,12 +59,22 @@ aspectRatioUnsafe xin yin =
     AspectRatio xin yin
 
 
-equal : AspectRatio -> AspectRatio -> Bool
-equal first second =
-    xNormalizedAboveOne first
-        == xNormalizedAboveOne second
-        && yNormalizedAboveOne first
-        == yNormalizedAboveOne second
+
+-- Accessors
+
+
+{-| Alias for xNormalizedBelowOne
+-}
+x : AspectRatio -> Float
+x =
+    xNormalizedBelowOne
+
+
+{-| Alias for yNormalizedBelowOne
+-}
+y : AspectRatio -> Float
+y =
+    yNormalizedBelowOne
 
 
 {-|
@@ -99,15 +137,19 @@ yNormalizedBelowOne (AspectRatio xVal yVal) =
     yVal / max xVal yVal
 
 
-{-| Alias for xNormalizedAboveOne
--}
-x : AspectRatio -> Float
-x =
-    xNormalizedAboveOne
+{-| -}
+smallestBelowOne : AspectRatio -> Float
+smallestBelowOne ratio =
+    min (xNormalizedBelowOne ratio) (yNormalizedBelowOne ratio)
 
 
-{-| Alias for yNormalizedAboveOne
--}
-y : AspectRatio -> Float
-y =
-    yNormalizedAboveOne
+
+-- Operations
+
+
+equal : AspectRatio -> AspectRatio -> Bool
+equal first second =
+    xNormalizedAboveOne first
+        == xNormalizedAboveOne second
+        && yNormalizedAboveOne first
+        == yNormalizedAboveOne second
