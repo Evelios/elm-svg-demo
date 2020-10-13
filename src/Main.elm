@@ -3,9 +3,12 @@ module Main exposing (main)
 import Browser
 import Element exposing (..)
 import Element.Background as Background
+import Element.Events
 import Html exposing (Html)
-import Ui.Color exposing (Theme(..))
+import List.Extra
+import Ui.Color
 import Ui.Icon
+import Ui.Panel
 import Ui.TopBar
 
 
@@ -16,7 +19,7 @@ type alias Model =
 
 
 type Msg
-    = None
+    = ToggleSettings
 
 
 main : Program () Model Msg
@@ -32,7 +35,7 @@ main =
 init : () -> ( Model, Cmd Msg )
 init _ =
     ( { title = "Project Name"
-      , showSettings = False
+      , showSettings = True
       }
     , Cmd.none
     )
@@ -41,8 +44,10 @@ init _ =
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        None ->
-            ( model, Cmd.none )
+        ToggleSettings ->
+            ( { model | showSettings = not model.showSettings }
+            , Cmd.none
+            )
 
 
 subscriptions : model -> Sub Msg
@@ -51,25 +56,40 @@ subscriptions _ =
 
 
 view : Model -> Html Msg
-view _ =
+view model =
     let
         topBar =
             Ui.TopBar.topBar []
                 [ Ui.TopBar.title [] (text "Project Name")
-                , Ui.TopBar.icon [ alignRight ] Ui.Icon.settings
+                , Ui.TopBar.icon
+                    [ alignRight
+                    , Element.Events.onClick ToggleSettings
+                    ]
+                    Ui.Icon.settings
                 ]
 
         body =
-            el
+            row
                 [ height fill
                 , width fill
                 ]
-                none
+                ([ pictureContent ]
+                    |> List.Extra.appendIf model.showSettings settings
+                )
+
+        pictureContent =
+            el [ width fill, height fill ] none
+
+        settings =
+            Ui.Panel.panel []
+                [ Ui.Panel.header [] <| text "Settings"
+                , Ui.Panel.break
+                ]
     in
     layout
         [ width fill
         , height fill
-        , Background.color Ui.Color.foreground
+        , Background.color Ui.Color.background
         ]
         (column
             [ width fill

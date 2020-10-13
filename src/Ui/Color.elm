@@ -1,50 +1,9 @@
-module Ui.Color exposing (Theme(..), background, foreground, oppositeTheme, primary, secondary, text)
+module Ui.Color exposing (background, primary, secondary, textDark, textLight, uiBackground)
 
 {-| -}
 
 import Element
-import Ui.Config exposing (config)
-
-
-{-| -}
-type Theme
-    = Dark
-    | Light
-
-
-{-| -}
-type Role
-    = Foreground
-    | Background
-    | Primary
-    | Secondary
-
-
-{-| -}
-color : Theme -> Role -> Element.Color
-color theme role =
-    case role of
-        Background ->
-            case theme of
-                Dark ->
-                    config.color.almostBlack
-
-                Light ->
-                    config.color.almostWhite
-
-        Foreground ->
-            case theme of
-                Dark ->
-                    config.color.white
-
-                Light ->
-                    config.color.black
-
-        Primary ->
-            config.color.purple
-
-        Secondary ->
-            config.color.green
+import Ui.Config
 
 
 
@@ -52,47 +11,38 @@ color theme role =
 
 
 {-| -}
-foreground : Element.Color
-foreground =
-    color Dark Foreground
+uiBackground : Element.Color
+uiBackground =
+    Ui.Config.color.almostBlack
 
 
 {-| -}
 background : Element.Color
 background =
-    color Dark Background
+    Ui.Config.color.almostWhite
 
 
 {-| -}
 primary : Element.Color
 primary =
-    color Dark Primary
+    Ui.Config.color.purple
 
 
 {-| -}
 secondary : Element.Color
 secondary =
-    color Dark Secondary
+    Ui.Config.color.green
 
 
 
 -- Text Colors
 
 
-text : Theme -> Element.Color
-text theme =
-    color theme Foreground
+textDark : Element.Color
+textDark =
+    Ui.Config.color.black
 
 
-
--- Theme
-
-
-oppositeTheme : Theme -> Theme
-oppositeTheme theme =
-    case theme of
-        Dark ->
-            Light
-
-        Light ->
-            Dark
+textLight : Element.Color
+textLight =
+    Ui.Config.color.white
