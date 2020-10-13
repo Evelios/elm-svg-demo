@@ -1,4 +1,4 @@
-module Ui.TopBar exposing (title, topBar)
+module Ui.TopBar exposing (icon, title, topBar)
 
 {-| -}
 
@@ -7,21 +7,22 @@ import Element.Background
 import Element.Font as Font
 import Ui.Color exposing (Theme(..))
 import Ui.Config exposing (config)
+import Ui.Icon as Icon exposing (Icon)
 
 
 {-| -}
 topBar :
     List (Attribute msg)
-    -> Element msg
+    -> List (Element msg)
     -> Element msg
 topBar attributes body =
-    el
-        (List.append attributes
-            [ width fill
-            , height <| px config.topBar.height
-            , Element.Background.color Ui.Color.background
-            , Font.color <| Ui.Color.text Dark
-            ]
+    row
+        ([ width fill
+         , height <| px config.topBar.height
+         , Element.Background.color Ui.Color.background
+         , Font.color <| Ui.Color.text Dark
+         ]
+            ++ attributes
         )
         body
 
@@ -43,3 +44,23 @@ title attributes element =
             ++ attributes
         )
         element
+
+
+{-|
+
+    topBarSettings =
+        TopBar.icon [] Ui.Icon.settings
+
+-}
+icon : List (Attribute msg) -> Icon msg -> Element msg
+icon attributes theIcon =
+    Icon.render
+        ([ paddingXY config.topBar.paddingX 0
+         , centerY
+         ]
+            ++ attributes
+        )
+        { color = Ui.Color.text Dark
+        , size = config.topBar.fontSize
+        }
+        theIcon

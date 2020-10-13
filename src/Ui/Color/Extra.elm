@@ -1,4 +1,4 @@
-module Ui.Color.Extra exposing (hexToColor)
+module Ui.Color.Extra exposing (fromColor, hexToColor, toColor)
 
 {-| Converts a string to a color.
 -}
@@ -17,6 +17,17 @@ fromColor elementColor =
             Color.toRgba elementColor
     in
     Element.rgba cl.red cl.green cl.blue cl.alpha
+
+
+{-| Convert an Element.Color into a Color.Color
+-}
+toColor : Element.Color -> Color.Color
+toColor elementColor =
+    let
+        cl =
+            Element.toRgb elementColor
+    in
+    Color.rgba cl.red cl.green cl.blue cl.alpha
 
 
 hexToColor : String -> Element.Color

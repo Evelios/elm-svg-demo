@@ -3,11 +3,10 @@ module Main exposing (main)
 import Browser
 import Element exposing (..)
 import Element.Background as Background
-import Element.Font as Font
 import Html exposing (Html)
 import Ui.Color exposing (Theme(..))
+import Ui.Icon
 import Ui.TopBar
-import Ui.Typography
 
 
 type alias Model =
@@ -55,8 +54,10 @@ view : Model -> Html Msg
 view _ =
     let
         topBar =
-            Ui.TopBar.topBar [] <|
-                Ui.TopBar.title [] (text "Project Name")
+            Ui.TopBar.topBar []
+                [ Ui.TopBar.title [] (text "Project Name")
+                , Ui.TopBar.icon [ alignRight ] Ui.Icon.settings
+                ]
 
         body =
             el
